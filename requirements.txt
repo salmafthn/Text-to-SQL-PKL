@@ -1,0 +1,8 @@
+streamlit
+pandas
+sqlalchemy
+pymysql
+python-dotenv
+tensorflow
+scikit-learn
+numpy

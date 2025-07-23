@@ -1,0 +1,101 @@
+Kalimat Pengguna,Intent
+Tampilkan semua data anak usia di bawah lima tahun.,search_data
+Berapa jumlah keluarga yang sudah terdaftar?,aggregate_query
+Apa itu kartu KIA?,faq_general
+Jadwal kegiatan kesehatan bulan ini apa saja?,external_event_query
+Cek nama ibu yang punya anak lebih dari dua.,search_data
+Berapa total anak dalam satu RT?,aggregate_query
+Keluarga yang belum punya BPJS berapa banyak?,aggregate_query
+Tampilkan anak-anak yang belum punya akta lahir.,search_data
+Apa fungsi kartu keluarga sejahtera?,faq_general
+Ada kegiatan apa minggu depan?,external_event_query
+Berapa orang tua yang punya lebih dari tiga anak?,aggregate_query
+Apa saja manfaat dari data keluarga lengkap?,faq_general
+Daftar keluarga yang tinggal di RW 03 dong.,search_data
+Total keluarga dengan balita berapa ya?,aggregate_query
+Apa itu NIK dan kenapa penting?,faq_general
+Kegiatan parenting ada jadwalnya kapan?,external_event_query
+Siapa saja anak yang tinggal bersama kakek-neneknya?,search_data
+Tampilkan keluarga dengan anak usia sekolah.,search_data
+Apa peran kader di lingkungan masyarakat?,faq_general
+Ada seminar kesehatan bulan ini?,external_event_query
+Berapa keluarga yang sudah punya data lengkap?,aggregate_query
+Apa bedanya KK dan NKK?,faq_general
+Siapa saja warga yang belum melengkapi datanya?,search_data
+Berapa RT yang belum menyerahkan laporan?,aggregate_query
+Apa itu data agregat keluarga?,faq_general
+Kapan pelatihan kader berikutnya?,external_event_query
+Cek data anak-anak yang belum sekolah.,search_data
+Jumlah orang tua tunggal di desa ini berapa?,aggregate_query
+Apa itu sistem informasi keluarga?,faq_general
+Ada pelatihan parenting minggu depan?,external_event_query
+Tampilkan warga yang tinggal di dusun A.,search_data
+Berapa kepala keluarga di RW 05?,aggregate_query
+Kenapa data keluarga harus diperbarui?,faq_general
+Jadwal pembagian vitamin kapan ya?,external_event_query
+Cek data keluarga yang tidak lengkap.,search_data
+Berapa balita laki-laki dan perempuan?,aggregate_query
+Apa itu identitas kependudukan digital?,faq_general
+Kegiatan sosial minggu depan apa saja?,external_event_query
+Tampilkan keluarga yang punya lebih dari 3 anak.,search_data
+Berapa anak usia dini yang belum sekolah?,aggregate_query
+Apa fungsi pendataan keluarga tahunan?,faq_general
+Ada program bantuan sosial bulan ini?,external_event_query
+Siapa saja warga yang belum punya KTP?,search_data
+Berapa total warga lansia di desa ini?,aggregate_query
+Apa pentingnya akta kelahiran?,faq_general
+Kapan ada penyuluhan gizi lagi?,external_event_query
+Tampilkan warga dengan status ibu hamil.,search_data
+Jumlah keluarga miskin tahun ini berapa?,aggregate_query
+Apa yang dimaksud dengan kader posyandu?,faq_general
+Cek kegiatan komunitas bulan depan.,external_event_query
+Tampilkan semua data anak usia di bawah lima tahun.,search_data
+Berapa jumlah keluarga yang sudah terdaftar?,aggregate_query
+Apa itu kartu KIA?,faq_general
+Jadwal kegiatan kesehatan bulan ini apa saja?,external_event_query
+Cek nama ibu yang punya anak lebih dari dua.,search_data
+Berapa total anak dalam satu RT?,aggregate_query
+Keluarga yang belum punya BPJS berapa banyak?,aggregate_query
+Tampilkan anak-anak yang belum punya akta lahir.,search_data
+Apa fungsi kartu keluarga sejahtera?,faq_general
+Ada kegiatan apa minggu depan?,external_event_query
+Berapa orang tua yang punya lebih dari tiga anak?,aggregate_query
+Apa saja manfaat dari data keluarga lengkap?,faq_general
+Daftar keluarga yang tinggal di RW 03 dong.,search_data
+Total keluarga dengan balita berapa ya?,aggregate_query
+Apa itu NIK dan kenapa penting?,faq_general
+Kegiatan parenting ada jadwalnya kapan?,external_event_query
+Siapa saja anak yang tinggal bersama kakek-neneknya?,search_data
+Tampilkan keluarga dengan anak usia sekolah.,search_data
+Apa peran kader di lingkungan masyarakat?,faq_general
+Ada seminar kesehatan bulan ini?,external_event_query
+Berapa keluarga yang sudah punya data lengkap?,aggregate_query
+Apa bedanya KK dan NKK?,faq_general
+Siapa saja warga yang belum melengkapi datanya?,search_data
+Berapa RT yang belum menyerahkan laporan?,aggregate_query
+Apa itu data agregat keluarga?,faq_general
+Kapan pelatihan kader berikutnya?,external_event_query
+Cek data anak-anak yang belum sekolah.,search_data
+Jumlah orang tua tunggal di desa ini berapa?,aggregate_query
+Apa itu sistem informasi keluarga?,faq_general
+Ada pelatihan parenting minggu depan?,external_event_query
+Tampilkan warga yang tinggal di dusun A.,search_data
+Berapa kepala keluarga di RW 05?,aggregate_query
+Kenapa data keluarga harus diperbarui?,faq_general
+Jadwal pembagian vitamin kapan ya?,external_event_query
+Cek data keluarga yang tidak lengkap.,search_data
+Berapa balita laki-laki dan perempuan?,aggregate_query
+Apa itu identitas kependudukan digital?,faq_general
+Kegiatan sosial minggu depan apa saja?,external_event_query
+Tampilkan keluarga yang punya lebih dari 3 anak.,search_data
+Berapa anak usia dini yang belum sekolah?,aggregate_query
+Apa fungsi pendataan keluarga tahunan?,faq_general
+Ada program bantuan sosial bulan ini?,external_event_query
+Siapa saja warga yang belum punya KTP?,search_data
+Berapa total warga lansia di desa ini?,aggregate_query
+Apa pentingnya akta kelahiran?,faq_general
+Kapan ada penyuluhan gizi lagi?,external_event_query
+Tampilkan warga dengan status ibu hamil.,search_data
+Jumlah keluarga miskin tahun ini berapa?,aggregate_query
+Apa yang dimaksud dengan kader posyandu?,faq_general
+Cek kegiatan komunitas bulan depan.,external_event_query
