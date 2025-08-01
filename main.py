@@ -56,37 +56,43 @@ def intent_detect(text):
 
 # ==== LLM: TEXT TO SQL ====
 def text_to_sql(prompt):
-    relevant_tables = detect_relevant_tables(prompt, extract_mysql.tabel_info)
-    schema_string = json.dumps(relevant_tables, indent=2)
+    schema_string = json.dumps(extract_mysql.tabel_info, indent=2)
+
 
     url = "http://localhost:11434/api/generate"
     data = {
         "model": "mistral",
         "prompt": f"""
-        You are a helpful assistant that only returns valid MySQL queries. 
-        Given the database schema below:
+        You are an expert MySQL assistant. Given the database schema below:
 
+        ### Database Schema:
         {schema_string}
 
-        Convert the following question into a valid SQL query. 
-        Do not use quotes around column names. Return only the SQL code.
+        ### Instructions:
+        1. Convert the user's question into a valid MySQL query.
+        2. ONLY return the SQL code, nothing else.
+        3. Ensure all table names (like `Persons`, `Mahasiswa`, `Dosen`) and column names are exactly as provided in the schema. Do not invent tables or columns.
 
-        Question:
+        ### User Question:
         {prompt}
 
-        SQL:
+        ### SQL Query:
         """,
         "stream": False,
-        "temperature": 0.2
+        "temperature": 0.0 # Set ke 0 untuk hasil yang lebih akurat dan konsisten
     }
 
     try:
         response = requests.post(url, json=data)
         response.raise_for_status()
         result = response.json()
-        return result.get("response", "").strip()
+        # Membersihkan output dari LLM yang kadang menyertakan markdown
+        sql_query = result.get("response", "").strip()
+        if "```sql" in sql_query:
+            sql_query = sql_query.split("```sql")[1].split("```")[0].strip()
+        return sql_query
     except Exception as e:
-        return f"❌ Error: {str(e)}"
+        return f"❌ Error saat menghubungi LLM: {str(e)}"
 
 # ==== RUN SQL ====
 def run_sql(sql):
