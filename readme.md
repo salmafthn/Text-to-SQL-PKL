@@ -64,7 +64,7 @@ Aplikasi ini memungkinkan pengguna untuk mengetikkan pertanyaan dalam Bahasa Nat
 
 ---
 
-## 🗄️ Konfigurasi Database
+## Konfigurasi Database
 
 Ubah konfigurasi koneksi database di bagian ini (dalam file `main.py`):
 
@@ -90,11 +90,28 @@ tabel_info = {
 
 ---
 
-## 💡 Contoh Pertanyaan
+## Contoh Pertanyaan
 
-* "Tampilkan semua warga yang pernah diperiksa tahun 2024"
-* "Berapa rata-rata berat badan bayi di setiap desa?"
-* "Siapa saja warga yang belum pernah diperiksa?"
+*  Mudah
+Tampilkan nama dosen dengan dosen id 20.
+
+Tampilkan nama mahasiswa dengan mahasiswa nim 195150707111021.
+
+Tampilkan judul skripsi dengan skripsi id 15.
+
+*  Menengah
+Tampilkan nama mahasiswa dengan judul skripsi "Analisis Faktor-Faktor yang Memengaruhi Kepuasan dan Loyalitas Pengguna Chatbot MITA Bank Mandiri".
+
+Tampilkan judul skripsi yang dosen pembimbing 1 nya adalah Herman Tolle.
+
+Tampilkan mahasiswa nim yang dosen pembimbing 2 nya adalah Satrio Hadi Wijoyo.
+
+*  Sulit
+Sebutkan nama mahasiswa dan nama dosen pembimbing untuk semua skripsi dengan bidang penelitian Pengembangan Sistem Informasi.
+
+Tampilkan nama mahasiswa dan judul skripsinya yang dibimbing oleh dosen dengan dosen id 11.
+
+Tampilkan nama mahasiswa dan bidang_penelitiannya yang dibimbing oleh dosen dengan dosen id 11.
 
 ---
 
@@ -111,13 +128,13 @@ Aplikasi ini **tidak mengeksekusi query destruktif** seperti:
 
 ---
 
-## 📤 Ekspor Data
+## Ekspor Data
 
 Setelah query dijalankan, kamu dapat mengunduh hasilnya dalam format `.csv` langsung dari antarmuka Streamlit.
 
 ---
 
-## 🧑‍💻 Developer
+## Developer
 
 Dikembangkan menggunakan:
 
@@ -128,7 +145,7 @@ Dikembangkan menggunakan:
 
 ---
 
-### ✨ Dibuat oleh
+### Dibuat oleh
 
 Proyek ini dikerjakan oleh:
 
