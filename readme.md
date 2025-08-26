@@ -14,7 +14,7 @@ Aplikasi ini memungkinkan pengguna untuk mengetikkan pertanyaan dalam Bahasa Nat
 
 -----
 
-## Prasyarat
+## Requirements
 
 Untuk menjalankan aplikasi ini, Anda hanya perlu menginstal **Docker Desktop** di komputer Anda. Semua dependensi lainnya (MySQL, Ollama, Python, library, dll.) sudah terpaket di dalam Docker.
 
@@ -27,7 +27,7 @@ Untuk menjalankan aplikasi ini, Anda hanya perlu menginstal **Docker Desktop** d
 
 -----
 
-## Petunjuk Instalasi
+## Instalasi
 
 Aplikasi ini dikemas dalam kontainer Docker untuk memastikan portabilitas. Ikuti langkah-langkah di bawah ini untuk memulai.
 
@@ -46,7 +46,7 @@ Aplikasi ini dikemas dalam kontainer Docker untuk memastikan portabilitas. Ikuti
     docker-compose up --build -d
     ```
 
-3.  **Unduh Model Ollama (Hanya Pertama Kali):**
+3.  **Unduh Model Ollama (Cukup sekali saja):**
     Buka terminal kedua dan jalankan perintah ini untuk mengunduh model Mistral ke dalam kontainer Ollama.
 
     ```bash
@@ -101,15 +101,13 @@ Aplikasi ini **tidak mengeksekusi query destruktif** seperti:
 
 -----
 
-## Ekspor Data
+## Export Data
 
 Setelah query dijalankan, Anda dapat mengunduh hasilnya dalam format `.csv` langsung dari antarmuka Streamlit.
 
 -----
 
-## Developer
-
-Proyek ini dikembangkan oleh:
+### Proyek ini dikembangkan oleh:
 
   - **Muhammad Ikram Sabila Rasyad** – ([https://github.com/Ikram-sabila](https://github.com/Ikram-sabila))
   - **Ananda Annisa Sungkar** – ([https://github.com/annisasungkar](https://github.com/annisasungkar))
