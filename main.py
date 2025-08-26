@@ -59,24 +59,28 @@ def intent_detect(text):
 def text_to_sql(prompt):
     schema_string = json.dumps(extract_mysql.tabel_info, indent=2)
 
-
     url = "http://ollama:11434/api/generate"
-    # Di dalam fungsi text_to_sql di main.py
-
+    
+    # PROMPT BARU DENGAN INSTRUKSI YANG JAUH LEBIH DETAIL
     data = {
         "model": "mistral",
         "prompt": f"""
-        You are an expert MySQL assistant. Given the database schema below:
+        You are an expert MySQL assistant. Your task is to convert natural language questions into accurate MySQL queries based on the provided database schema.
 
         ### Database Schema:
         {schema_string}
 
         ### Instructions:
-        1. Convert the user's question into a valid MySQL query.
-        2. IMPORTANT! ONLY return the SQL code, nothing else.
-        3. Ensure all table names and column names are exactly as provided in the database schema.
-        4. **CRITICAL: For searching text in columns like `nama_mahasiswa`, `nama_dosen`, or `judul_skripsi`, always use the `LIKE` operator with wildcards (e.g., `WHERE nama_dosen LIKE '%Herman Tolle%'`) instead of the `=` operator. This ensures partial matches are found.**
-        5. If using aggregate functions like COUNT, always give the resulting column an alias using 'AS'.
+        1.  **Analyze the User's Question:** Identify the specific information (columns) the user is asking for.
+        2.  **Identify Necessary Tables:** Determine which tables are required to answer the question. This often involves joining multiple tables.
+        3.  **Construct JOINs Correctly:** When joining tables, use the foreign key relationships. For example, to connect `Persons` and `Mahasiswa`, use `Persons.mahasiswa_nim = Mahasiswa.mahasiswa_nim`. To connect `Persons` and `Dosen`, use `Persons.dosen_pembimbing_1 = Dosen.dosen_id` or `Persons.dosen_pembimbing_2 = Dosen.dosen_id`.
+        4.  **Use `LIKE` for Text Searches:** For filtering on text columns like `nama_mahasiswa`, `nama_dosen`, or `judul_skripsi`, always use the `LIKE` operator with wildcards (`%text%`) for flexible matching.
+        5.  **Use Aliases for Clarity:** When joining the same table twice (like `Dosen` for two supervisors), use aliases (e.g., `Dosen AS Pembimbing1`, `Dosen AS Pembimbing2`).
+        6.  **Final Output:** Your final response MUST ONLY be the SQL query. Do not include any explanations, comments, or markdown formatting like ```sql.
+
+        ### Example of a Complex Query:
+        User Question: "Siapa nama dosen pembimbing 1 dan nama dosen pembimbing 2 untuk mahasiswa bernama M. ALFIAN NOOR?"
+        Your SQL Output: SELECT p1.nama_dosen AS dosen_pembimbing_1, p2.nama_dosen AS dosen_pembimbing_2 FROM Mahasiswa m JOIN Persons ps ON m.mahasiswa_nim = ps.mahasiswa_nim JOIN Dosen p1 ON ps.dosen_pembimbing_1 = p1.dosen_id LEFT JOIN Dosen p2 ON ps.dosen_pembimbing_2 = p2.dosen_id WHERE m.nama_mahasiswa LIKE '%M. ALFIAN NOOR%';
 
         ### User Question:
         {prompt}
@@ -91,11 +95,20 @@ def text_to_sql(prompt):
         response = requests.post(url, json=data)
         response.raise_for_status()
         result = response.json()
-        # Membersihkan output dari LLM yang kadang menyertakan markdown
+        
+        # LOGIKA PEMBERSIHAN YANG LEBIH KUAT
         sql_query = result.get("response", "").strip()
-        if "```sql" in sql_query:
-            sql_query = sql_query.split("```sql")[1].split("```")[0].strip()
-        return sql_query
+        
+        # Menghapus blok kode markdown jika ada
+        if sql_query.startswith("```sql"):
+            sql_query = sql_query[6:]
+        if sql_query.startswith("```"):
+            sql_query = sql_query[3:]
+        if sql_query.endswith("```"):
+            sql_query = sql_query[:-3]
+            
+        return sql_query.strip()
+        
     except Exception as e:
         return f"❌ Error saat menghubungi LLM: {str(e)}"
 
