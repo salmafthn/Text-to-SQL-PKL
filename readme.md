@@ -1,148 +1,116 @@
 # Text to SQL with Mistral & Streamlit
 
-Aplikasi ini memungkinkan pengguna untuk mengetikkan pertanyaan dalam Bahasa Natural (Natural Language) dan mengubahnya secara otomatis menjadi query SQL menggunakan LLM (Mistral), lalu menjalankannya langsung ke database MySQL.
+Aplikasi ini memungkinkan pengguna untuk mengetikkan pertanyaan dalam Bahasa Natural (Bahasa Indonesia) dan mengubahnya secara otomatis menjadi query SQL menggunakan LLM (Mistral), lalu menjalankannya langsung ke database MySQL yang terisolasi dalam lingkungan Docker.
 
----
+-----
 
 ## Fitur
 
-* Mengubah pertanyaan dalam Bahasa Indonesia atau Inggris menjadi SQL
-* Menampilkan dan mengeksekusi SQL langsung dari Streamlit
-* Menampilkan hasil query dalam bentuk tabel dan bisa diunduh sebagai CSV
-* Deteksi otomatis tabel relevan berdasarkan pertanyaan
-* Pencegahan eksekusi query berbahaya (`DROP`, `DELETE`, dsb.)
+  * Konversi pertanyaan dalam Bahasa Indonesia menjadi SQL.
+  * Menjalankan query secara langsung dari antarmuka web.
+  * Menampilkan hasil query dalam bentuk tabel dan bisa diunduh sebagai file CSV.
+  * Pencegahan eksekusi query berbahaya (`DROP`, `DELETE`, `TRUNCATE`, `ALTER`, `UPDATE`, `INSERT`).
+  * Mendeteksi maksud dari pertanyaan untuk merespons dengan lebih akurat.
 
----
+-----
 
-## Requirements
+## Prasyarat
 
-* Python 3.8+
-* MySQL Server
-* [Ollama](https://ollama.com) dengan model `mistral` yang sudah diinstal
+Untuk menjalankan aplikasi ini, Anda hanya perlu menginstal **Docker Desktop** di komputer Anda. Semua dependensi lainnya (MySQL, Ollama, Python, library, dll.) sudah terpaket di dalam Docker.
 
----
+-----
 
 ## Model AI yang Digunakan
 
-* **Mistral 7B** (via [Ollama](https://ollama.com/))
-* LLM ini digunakan untuk menerjemahkan teks natural menjadi SQL berdasarkan struktur skema database
+  * **LSTM** untuk Klasifikasi Maksud (Intent Classification) dari pertanyaan.
+  * **Mistral 7B** (via [Ollama](https://ollama.com/)) untuk Generasi Query SQL berdasarkan skema database yang diberikan.
 
----
+-----
 
 ## Petunjuk Instalasi
 
-1. **Clone repo dan masuk ke folder proyek:**
+Aplikasi ini dikemas dalam kontainer Docker untuk memastikan portabilitas. Ikuti langkah-langkah di bawah ini untuk memulai.
 
-   ```bash
-   git clone <[repo-url](https://github.com/Ikram-sabila/PKL_Text2SQL_LabSI)>
-   cd <PKL_Text2SQL_LabSI>
-   ```
+1.  **Clone Repositori:**
+    Buka terminal dan jalankan perintah berikut untuk mengunduh kode proyek:
 
-2. **Install dependencies:**
+    ```bash
+    git clone <[repo-url](https://github.com/Ikram-sabila/PKL_Text2SQL_LabSI)>
+    cd <PKL_Text2SQL_LabSI>
+    ```
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+2.  **Jalankan Docker Compose:**
+    Jalankan perintah ini. Proses ini akan membangun image aplikasi, menginisialisasi database, dan menjalankan semua layanan.
 
-3. **Instal dan jalankan Ollama:**
+    ```bash
+    docker-compose up --build -d
+    ```
 
-   * Download dan install [Ollama](https://ollama.com/)
+3.  **Unduh Model Ollama (Hanya Pertama Kali):**
+    Buka terminal kedua dan jalankan perintah ini untuk mengunduh model Mistral ke dalam kontainer Ollama.
 
-   * Jalankan model mistral:
+    ```bash
+    docker exec -it ollama_server ollama pull mistral
+    ```
 
-     ```bash
-     ollama run mistral
-     ```
+-----
 
-   * Pastikan Ollama berjalan di `http://localhost:11434`
+## Konfigurasi
 
-4. **Jalankan aplikasi:**
+Semua konfigurasi database sudah diotomatisasi di dalam Docker.
 
-   ```bash
-   streamlit run main.py
-   ```
+  - Database `skripsi` dan tabelnya dibuat secara otomatis dari file `.sql`.
+  - Kredensial database (`root` dengan password `123`) sudah didefinisikan di dalam file `.env` dan `docker-compose.yml`.
 
----
-
-## Konfigurasi Database
-
-Ubah konfigurasi koneksi database di bagian ini (dalam file `main.py`):
-
-```python
-pymysql.connect(
-    host="localhost",
-    user="root",
-    password="",
-    database="",
-    ...
-)
-```
-
-Pastikan database dan tabel sudah tersedia, dan file `extract_mysql.py` berisi dictionary `tabel_info` yang mendeskripsikan skema tabel seperti:
-
-```python
-tabel_info = {
-    "warga": ["id", "nama", "alamat", "tanggal_lahir"],
-    "pemeriksaan": ["id", "warga_id", "berat", "tinggi", "tanggal"],
-    ...
-}
-```
-
----
+-----
 
 ## Contoh Pertanyaan
 
-###  Mudah
-*  Tampilkan nama dosen dengan dosen id 20.
-*  Tampilkan nama mahasiswa dengan mahasiswa nim 195150707111021.
-*  Tampilkan judul skripsi dengan skripsi id 15.
+Berikut adalah beberapa contoh pertanyaan yang dapat Anda coba untuk menguji fungsionalitas aplikasi.
 
-###  Menengah
-*  Tampilkan nama mahasiswa dengan judul skripsi "Analisis Faktor-Faktor yang Memengaruhi Kepuasan dan Loyalitas Pengguna Chatbot MITA Bank Mandiri".
-*  Tampilkan judul skripsi yang dosen pembimbing 1 nya adalah Herman Tolle.
-*  Tampilkan mahasiswa nim yang dosen pembimbing 2 nya adalah Satrio Hadi Wijoyo.
+### Mudah (Pencarian Langsung)
 
-###  Sulit
-*  Sebutkan nama mahasiswa dan nama dosen pembimbing untuk semua skripsi dengan bidang penelitian Pengembangan Sistem Informasi.
-*  Tampilkan nama mahasiswa dan judul skripsinya yang dibimbing oleh dosen dengan dosen id 11.
-*  Tampilkan nama mahasiswa dan bidang_penelitiannya yang dibimbing oleh dosen dengan dosen id 11.
+  * Tampilkan semua data dari tabel Dosen.
+  * Siapa nama mahasiswa dengan NIM 195150707111021?
+  * Apa program studi dari mahasiswa bernama NANDA RISKA DEWI?
 
----
+### Menengah (Menggabungkan Dua Tabel)
+
+  * Tampilkan judul skripsi yang ditulis oleh mahasiswa bernama SALMIN RASIDIN THAHIR.
+  * Siapa nama dosen pembimbing 1 untuk skripsi berjudul "Analisis Faktor-Faktor yang Memengaruhi Kepuasan dan Loyalitas Pengguna Chatbot MITA Bank Mandiri"?
+  * Sebutkan semua nama mahasiswa yang dibimbing oleh dosen Herman Tolle.
+
+### Sulit (Menggabungkan Banyak Informasi & Logika)
+
+  * Siapa nama dosen pembimbing 1 dan nama dosen pembimbing 2 untuk mahasiswa bernama M. ALFIAN NOOR?
+  * Tampilkan nama mahasiswa yang dibimbing oleh dosen AGHNIYA FAZA dari program studi Sistem Informasi.
+  * Sebutkan semua judul skripsi dengan minat "Data Science" yang diajukan setelah tanggal 1 Januari 2025.
+
+-----
 
 ## Keamanan
 
 Aplikasi ini **tidak mengeksekusi query destruktif** seperti:
 
-* `DROP`
-* `DELETE`
-* `TRUNCATE`
-* `ALTER`
-* `UPDATE`
-* `INSERT`
+  - `DROP`
+  - `DELETE`
+  - `TRUNCATE`
+  - `ALTER`
+  - `UPDATE`
+  - `INSERT`
 
----
+-----
 
 ## Ekspor Data
 
-Setelah query dijalankan, kamu dapat mengunduh hasilnya dalam format `.csv` langsung dari antarmuka Streamlit.
+Setelah query dijalankan, Anda dapat mengunduh hasilnya dalam format `.csv` langsung dari antarmuka Streamlit.
 
----
+-----
 
 ## Developer
 
-Dikembangkan menggunakan:
+Proyek ini dikembangkan oleh:
 
-* Python
-* Streamlit
-* LLM (Mistral via Ollama)
-* MySQL
-
----
-
-### Dibuat oleh
-
-Proyek ini dikerjakan oleh:
-
-- 🧑‍💻 **Muhammad Ikram Sabila Rasyad** – ([https://github.com/Ikram-sabila](https://github.com/Ikram-sabila))
-- 👩‍💻 **Ananda Annisa Sungkar** – ([https://github.com/annisasungkar](https://github.com/annisasungkar))
-- 👨‍💻 **Salma Adzra Fathina** – ([https://github.com/salmafthn](https://github.com/salmafthn))
+  - **Muhammad Ikram Sabila Rasyad** – ([https://github.com/Ikram-sabila](https://github.com/Ikram-sabila))
+  - **Ananda Annisa Sungkar** – ([https://github.com/annisasungkar](https://github.com/annisasungkar))
+  - **Salma Adzra Fathina** – ([https://github.com/salmafthn](https://github.com/salmafthn))
