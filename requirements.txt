@@ -6,3 +6,4 @@ python-dotenv
 tensorflow
 scikit-learn
 numpy
+cryptography

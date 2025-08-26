@@ -22,11 +22,12 @@ name_db = os.getenv("DATABASE_NAME")
 @st.cache_resource
 def get_connection():
     return pymysql.connect(
-        host="localhost",
+        host="db",
         user=username_db,
         password=password_db,
         database=name_db,
-        cursorclass=pymysql.cursors.DictCursor
+        port=3306,
+        cursorclass=pymysql.cursors.DictCursor,
     )
 
 # ==== DETEKSI SQL BERBAHAYA ====
@@ -59,7 +60,9 @@ def text_to_sql(prompt):
     schema_string = json.dumps(extract_mysql.tabel_info, indent=2)
 
 
-    url = "http://localhost:11434/api/generate"
+    url = "http://ollama:11434/api/generate"
+    # Di dalam fungsi text_to_sql di main.py
+
     data = {
         "model": "mistral",
         "prompt": f"""
@@ -70,8 +73,10 @@ def text_to_sql(prompt):
 
         ### Instructions:
         1. Convert the user's question into a valid MySQL query.
-        2. ONLY return the SQL code, nothing else.
-        3. Ensure all table names (like `Persons`, `Mahasiswa`, `Dosen`) and column names are exactly as provided in the schema. Do not invent tables or columns.
+        2. IMPORTANT! ONLY return the SQL code, nothing else.
+        3. Ensure all table names and column names are exactly as provided in the database schema.
+        4. **CRITICAL: For searching text in columns like `nama_mahasiswa`, `nama_dosen`, or `judul_skripsi`, always use the `LIKE` operator with wildcards (e.g., `WHERE nama_dosen LIKE '%Herman Tolle%'`) instead of the `=` operator. This ensures partial matches are found.**
+        5. If using aggregate functions like COUNT, always give the resulting column an alias using 'AS'.
 
         ### User Question:
         {prompt}
@@ -79,7 +84,7 @@ def text_to_sql(prompt):
         ### SQL Query:
         """,
         "stream": False,
-        "temperature": 0.0 # Set ke 0 untuk hasil yang lebih akurat dan konsisten
+        "temperature": 0.0
     }
 
     try:

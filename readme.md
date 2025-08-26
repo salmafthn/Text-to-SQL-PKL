@@ -1,10 +1,10 @@
-# 💬 Text to SQL with Mistral & Streamlit
+# Text to SQL with Mistral & Streamlit
 
 Aplikasi ini memungkinkan pengguna untuk mengetikkan pertanyaan dalam Bahasa Natural (Natural Language) dan mengubahnya secara otomatis menjadi query SQL menggunakan LLM (Mistral), lalu menjalankannya langsung ke database MySQL.
 
 ---
 
-## 🚀 Fitur
+## Fitur
 
 * Mengubah pertanyaan dalam Bahasa Indonesia atau Inggris menjadi SQL
 * Menampilkan dan mengeksekusi SQL langsung dari Streamlit
@@ -14,7 +14,7 @@ Aplikasi ini memungkinkan pengguna untuk mengetikkan pertanyaan dalam Bahasa Nat
 
 ---
 
-## 📦 Requirements
+## Requirements
 
 * Python 3.8+
 * MySQL Server
@@ -22,14 +22,14 @@ Aplikasi ini memungkinkan pengguna untuk mengetikkan pertanyaan dalam Bahasa Nat
 
 ---
 
-## 🧠 Model AI yang Digunakan
+## Model AI yang Digunakan
 
 * **Mistral 7B** (via [Ollama](https://ollama.com/))
 * LLM ini digunakan untuk menerjemahkan teks natural menjadi SQL berdasarkan struktur skema database
 
 ---
 
-## 🛠️ Instalasi
+## Petunjuk Instalasi
 
 1. **Clone repo dan masuk ke folder proyek:**
 

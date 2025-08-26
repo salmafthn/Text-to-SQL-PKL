@@ -1,0 +1,11 @@
+# file cache python
+__pycache__
+*.pyc
+
+# file Git
+.git
+.gitignore
+
+# konfigurasi ide
+.vscode
+.idea

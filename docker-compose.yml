@@ -1,0 +1,49 @@
+# File: docker-compose.yml (Versi Final yang Benar)
+
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: ${PASSWORD_DB}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+    # INI KUNCINYA: Mount folder mysql_init ke direktori inisialisasi bawaan MySQL
+    volumes:
+      - ./mysql_init:/docker-entrypoint-initdb.d
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${PASSWORD_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama_server
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+  app:
+    build: .
+    container_name: streamlit_app
+    restart: on-failure
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy # Kita tetap pakai healthcheck untuk kestabilan
+      ollama:
+        condition: service_started
+
+volumes:
+  db_data:
+  ollama_data:

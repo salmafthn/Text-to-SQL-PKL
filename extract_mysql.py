@@ -10,7 +10,7 @@ port_db = os.getenv("PORT_DB")
 name_db = os.getenv("DATABASE_NAME")
 
 print("✅ Database aktif:", name_db)
-engine = create_engine("mysql+pymysql://root:@localhost:3306/skripsi")
+engine = create_engine(f"mysql+pymysql://root:123@db:3306/skripsi")
 
 inspector = inspect(engine)
 tables = inspector.get_table_names()
