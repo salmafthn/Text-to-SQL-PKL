@@ -18,7 +18,6 @@ password_db = os.getenv("PASSWORD_DB")
 port_db = os.getenv("PORT_DB")
 name_db = os.getenv("DATABASE_NAME")
 
-# ==== CACHED CONNECTION ====
 @st.cache_resource
 def get_connection():
     return pymysql.connect(
@@ -30,13 +29,11 @@ def get_connection():
         cursorclass=pymysql.cursors.DictCursor,
     )
 
-# ==== DETEKSI SQL BERBAHAYA ====
 def is_dangerous_query(sql):
     dangerous = ['drop', 'delete', 'truncate', 'alter', 'update', 'insert']
     tokens = re.findall(r'\b\w+\b', sql.lower())
     return any(word in tokens for word in dangerous)
 
-# ==== DETECT RELEVANT TABLES ====
 def detect_relevant_tables(prompt, tabel_info):
     relevant = {}
     prompt_lower = prompt.lower()
@@ -50,18 +47,15 @@ def detect_relevant_tables(prompt, tabel_info):
                     break
     return relevant
 
-# ==== Model: Intent Detection ====
 def intent_detect(text):
     result = predict_intent(text)
     return result
 
-# ==== LLM: TEXT TO SQL ====
 def text_to_sql(prompt):
     schema_string = json.dumps(extract_mysql.tabel_info, indent=2)
 
     url = "http://ollama:11434/api/generate"
-    
-    # PROMPT BARU DENGAN INSTRUKSI YANG JAUH LEBIH DETAIL
+
     data = {
         "model": "mistral",
         "prompt": f"""
@@ -96,10 +90,8 @@ def text_to_sql(prompt):
         response.raise_for_status()
         result = response.json()
         
-        # LOGIKA PEMBERSIHAN YANG LEBIH KUAT
         sql_query = result.get("response", "").strip()
         
-        # Menghapus blok kode markdown jika ada
         if sql_query.startswith("```sql"):
             sql_query = sql_query[6:]
         if sql_query.startswith("```"):
@@ -112,7 +104,6 @@ def text_to_sql(prompt):
     except Exception as e:
         return f"❌ Error saat menghubungi LLM: {str(e)}"
 
-# ==== RUN SQL ====
 def run_sql(sql):
     try:
         conn = get_connection()
@@ -124,7 +115,6 @@ def run_sql(sql):
     except Exception as e:
         return f"❌ Query Execution Error: {str(e)}"
 
-# ==== STREAMLIT UI ====
 st.set_page_config(page_title="Text to SQL with Mistral", page_icon="🤖")
 
 st.sidebar.title("Database Schema")
@@ -135,13 +125,11 @@ for table, columns in extract_mysql.tabel_info.items():
 st.title("💬 Text to SQL Generator + Executor")
 st.markdown("Ketik pertanyaan dalam bahasa natural, lalu lihat hasil SQL-nya dan jalankan langsung.")
 
-# Inisialisasi session_state
 if "question" not in st.session_state:
     st.session_state.question = ""
 if "generated_sql" not in st.session_state:
     st.session_state.generated_sql = ""
 
-# Text area input
 question = st.text_area(
     "Pertanyaan (Natural Language):",
     value=st.session_state.question,
@@ -149,7 +137,6 @@ question = st.text_area(
     key="question"
 )
 
-# ==== BUTTON CONVERT ====
 if st.button("🔍 Convert to SQL"):
     if st.session_state.question.strip() == "":
         st.warning("Masukkan pertanyaan dulu ya.")
@@ -165,7 +152,6 @@ if st.button("🔍 Convert to SQL"):
                 st.session_state.generated_sql = sql_result
                 st.code(sql_result, language="sql")
 
-# ==== BUTTON EXECUTE ====
 if st.session_state.generated_sql:
     if st.button("Execute SQL"):
         sql = st.session_state.generated_sql

@@ -24,6 +24,3 @@ for table_name in tables:
         tipe = str(col["type"]).split(" ")[0].replace('"utf8mb4_unicode_ci"', "").replace("COLLATE", "").strip()
         tabel_info[table_name][col["name"]]=tipe
 
-## Jika ingin melihat full isi database di terminal
-# import json
-# print(json.dumps(tabel_info, indent=2))

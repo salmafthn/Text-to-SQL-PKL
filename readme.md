@@ -4,58 +4,36 @@ Aplikasi ini memungkinkan pengguna untuk mengetikkan pertanyaan dalam Bahasa Nat
 
 -----
 
-## Fitur
-
-  * Konversi pertanyaan dalam Bahasa Indonesia menjadi SQL.
-  * Menjalankan query secara langsung dari antarmuka web.
-  * Menampilkan hasil query dalam bentuk tabel dan bisa diunduh sebagai file CSV.
-  * Pencegahan eksekusi query berbahaya (`DROP`, `DELETE`, `TRUNCATE`, `ALTER`, `UPDATE`, `INSERT`).
-  * Mendeteksi maksud dari pertanyaan untuk merespons dengan lebih akurat.
-
------
-
-## Prasyarat
+## Requirements
 
 Untuk menjalankan aplikasi ini, Anda hanya perlu menginstal **Docker Desktop** di komputer Anda. Semua dependensi lainnya (MySQL, Ollama, Python, library, dll.) sudah terpaket di dalam Docker.
 
 -----
 
-## Model AI yang Digunakan
-
-  * **LSTM** untuk Klasifikasi Maksud (Intent Classification) dari pertanyaan.
-  * **Mistral 7B** (via [Ollama](https://ollama.com/)) untuk Generasi Query SQL berdasarkan skema database yang diberikan.
-
------
-
 ## Petunjuk Instalasi
 
-Aplikasi ini dikemas dalam kontainer Docker untuk memastikan portabilitas. Ikuti langkah-langkah di bawah ini untuk memulai.
+Aplikasi ini dikemas dalam kontainer Docker untuk memastikan portabilitas
 
-1.  **Clone Repositori:**
-    Buka terminal dan jalankan perintah berikut untuk mengunduh kode proyek:
+1.  **Clone Repository:**
+    Clone repository ini kemudian pindah ke direktori repository tersebut.
+    https://github.com/salmafthn/Text-to-SQL-PKL
 
-    ```bash
-    git clone <[repo-url](https://github.com/Ikram-sabila/PKL_Text2SQL_LabSI)>
-    cd <PKL_Text2SQL_LabSI>
-    ```
 
 2.  **Jalankan Docker Compose:**
     Jalankan perintah ini. Proses ini akan membangun image aplikasi, menginisialisasi database, dan menjalankan semua layanan.
 
     ```bash
-    docker-compose up --build -d
+    docker-compose up --build
     ```
 
-3.  **Unduh Model Ollama (Hanya Pertama Kali):**
-    Buka terminal kedua dan jalankan perintah ini untuk mengunduh model Mistral ke dalam kontainer Ollama.
+3.  **Unduh Model Ollama (cukup sekali saja)):**
+    Buka terminal kedua dan jalankan perintah ini untuk mengunduh model Mistral ke dalam kontainer Ollama. **Anda boleh menjalankannya saat sedang membangun image aplikasi**
 
     ```bash
     docker exec -it ollama_server ollama pull mistral
     ```
 
------
-
-## Konfigurasi
+#### Konfigurasi
 
 Semua konfigurasi database sudah diotomatisasi di dalam Docker.
 
@@ -66,9 +44,9 @@ Semua konfigurasi database sudah diotomatisasi di dalam Docker.
 
 ## Contoh Pertanyaan
 
-Berikut adalah beberapa contoh pertanyaan yang dapat Anda coba untuk menguji fungsionalitas aplikasi.
+Berikut adalah beberapa contoh pertanyaan yang dapat Anda coba.
 
-### Mudah (Pencarian Langsung)
+### Mudah (Direct Search)
 
   * Tampilkan semua data dari tabel Dosen.
   * Siapa nama mahasiswa dengan NIM 195150707111021?
